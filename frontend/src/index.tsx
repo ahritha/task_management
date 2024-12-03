@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux'
 import store from './redux/store'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Loading from './shared-ui/Loading';
 
 
 const root = ReactDOM.createRoot(
@@ -13,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-     <App />
+      <Suspense fallback={<Loading/>}>
+        <App />
+      </Suspense>
     </Provider>
   </React.StrictMode>
 );

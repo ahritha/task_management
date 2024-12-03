@@ -1,10 +1,12 @@
-import { Router } from "express";
-const router = Router();
+import express from 'express';
+import TaskController from '../controllers/task.controller';
+const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('hello')
-})
+router
+.get('/tasks', TaskController.getTasks)
+.post('/tasks', TaskController.createTask)
+.patch('/tasks/:id', TaskController.markTaskAsCompleted)
+.delete('/tasks/:id', TaskController.deleteTask)
 
 
-const publicRouter = router;
-export default publicRouter;
+export default router;

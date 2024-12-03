@@ -1,25 +1,39 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-
-interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-  isAdmin: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+export interface ITask extends Document {
+  title: string;
+  description: string;
+  dueDate: string;
+  status: 'Pending' | 'In Progress' | 'Completed';
 }
 
+const taskSchema: Schema<ITask> = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    dueDate: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ['Pending', 'In Progress', 'Completed'],
+      default: 'Pending',
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const userSchema = new Schema<IUser>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  isAdmin: { type: Boolean, default: false },
-}, {
-  timestamps: true, 
-});
+const Task = mongoose.model<ITask>('Task', taskSchema);
 
-const TasksModel: Model<IUser> = mongoose.model<IUser>('Task', userSchema);
-
-export default TasksModel;
+export default Task;
