@@ -4,7 +4,7 @@ export interface ITask extends Document {
   title: string;
   description: string;
   dueDate: string;
-  status: 'Pending' | 'In Progress' | 'Completed';
+  status:'completed' | 'incomplete';
 }
 
 const taskSchema: Schema<ITask> = new Schema(
@@ -25,8 +25,8 @@ const taskSchema: Schema<ITask> = new Schema(
     },
     status: {
       type: String,
-      enum: ['Pending', 'In Progress', 'Completed'],
-      default: 'Pending',
+      enum: ['incomplete', 'completed'],
+      default: 'incomplete',
     },
   },
   {

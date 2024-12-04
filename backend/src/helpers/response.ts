@@ -12,48 +12,31 @@ export const response = <T>(status_code: number = 200, message: string = "succes
 });
 
 
-export const listingRS = async <T extends Document>(
-  model: Model<T>,
-  page: number = 1,
-  size: number = 10,
-  query: [string, string] = ["", ""],
-  sort: SortOption = { createdAt: -1 },
-  populate?: [string, string][],
-  select: string = "-password"
-): Promise<Response<T[]>> => {
-  try {
-    let searchQuery = {};
-    if (query) {
-      searchQuery = { [query[0]]: { $regex: query[1], $options: 'i' } };
-    }
+export const listingRS = async (model: any, page: number, size: number, filter: Record<string, any>) => {
+  const skip = (page - 1) * size;
+  const limit = size;
 
-    let queryExec = model.find(searchQuery).select(select).skip((page - 1) * size).limit(size).sort(sort);
-    const totalRecords = await model.countDocuments(searchQuery);
+  const tasks = await model
+    .find(filter)
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 }) 
+    .exec();
 
+  const total = await model.countDocuments(filter);
 
-    if (populate) {
-      populate.forEach(([path, select]) => {
-        queryExec = queryExec.populate({
-          path: path,
-          select: select
-        });
-      });
-    }
-
-
-    const data = await queryExec.exec();
-    const paging: Paging = {
+  return {
+    data: tasks,
+    paging: {
+      total,
       page,
       size,
-      totals: totalRecords,
-      pageTotals: Math.ceil(totalRecords / size),
-    };
-
-    return response(200, "success", data, paging);
-  } catch (error) {
-    return response(500, `Error fetching data: ${error}`);
-  }
+      totalPages: Math.ceil(total / size),
+    },
+  };
 };
+
+
 
 
 export const PagingRS = async <T extends Document>(

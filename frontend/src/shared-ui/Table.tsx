@@ -1,12 +1,14 @@
-import { Column } from '../assets/types';
+import { Column } from '../assets/helper/types';
 import React from 'react';
+import Loading from './Loading';
 
 interface TableProps {
   columns: Column[];
   data: Record<string, any>[];
+  loading?: boolean
 }
 
-const Table: React.FC<TableProps> = ({ columns, data }) => {
+const Table: React.FC<TableProps> = ({ columns, data, loading }) => {
   if (!columns.length) return <p className="text-center text-red-500 my-4">No columns to display.</p>;
 
   return (
@@ -22,7 +24,13 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
           </tr>
         </thead>
         <tbody>
-          {data.length === 0 ? (
+          {loading ? (
+            <tr>
+              <td colSpan={columns.length} className="px-6 py-4 text-center">
+                <Loading />
+              </td>
+            </tr>
+          ) : data.length === 0 ? (
             <tr>
               <td colSpan={columns.length} className="px-6 py-4 text-center text-red-500">
                 No data to display
@@ -34,7 +42,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                 {columns.map((col) => (
                   <td
                     key={`${rowIndex}-${col.accessor}`}
-                    className="px-6 py-4 break-words max-w-[200px] sm:max-w-[300px] truncate"
+                    className="px-6 py-4 break-words max-w-[300px] sm:max-w-[500px] truncate"
                     style={{ wordBreak: 'break-word' }}
                   >
                     {col.render ? col.render(row) : row[col.accessor] || '-'}
@@ -44,6 +52,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
             ))
           )}
         </tbody>
+
       </table>
     </div>
   );

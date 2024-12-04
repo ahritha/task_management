@@ -17,10 +17,11 @@ const SelectForm: React.FC<SelectFormProps> = ({
     <div className="mb-2">
       <select
         id={id}
+        role="form" 
         onChange={onFilter}
         className="bg-gray-50 border border-gray-300 text-black text-sm rounded-md focus:ring-blue-50 focus:border-blue-500 block w-full p-1 "
       >
-        <option selected hidden>{label}</option>
+        <option value="" hidden>{label}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

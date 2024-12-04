@@ -6,11 +6,11 @@ export interface Column {
 
 export interface Paging {
   size: number;
-  currentPage: number;
+  page: number;
   totalPages: number;
-  totalItems: number;
+  total: number;
+  status? : string
 }
-
 export interface Response<T> {
   message: string;
   data: T;

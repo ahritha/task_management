@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { sidebarItems } from "../../assets/constant";
+import { sidebarItems } from "../../assets/helper/constant";
 
 
 
@@ -51,7 +51,8 @@ const Sidebar: React.FC = () => {
                         </button>
                     </div>
                     {/* Sidebar Items */}
-                    <ul className="space-y-2 font-medium mt-6">
+                    <p className="text-gray-700 mb-2 mt-6">Menu</p>
+                    <ul className="space-y-2 font-medium ">
                         {sidebarItems.map((item, index) => (
                             <li key={index}>
                                 <Link
