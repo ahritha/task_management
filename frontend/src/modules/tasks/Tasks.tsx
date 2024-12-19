@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import Table from '../../shared-ui/Table'
 import { tasksColumns } from './components/TableColumns'
 import useTasks from './actions/hook'
@@ -8,8 +8,7 @@ import AddModal from './components/AddModal'
 
 
 const Tasks = () => {
-  const { tasks, getTasksList, paging, loading } = useTasks()
-  const memoizedTasks = useMemo(() => tasks, [tasks]);
+  const { tasks, getTasksList, paging } = useTasks()
   useEffect(() => {
     getTasksList({})
   }, [])
@@ -46,7 +45,7 @@ const Tasks = () => {
 
       <Table
         columns={tasksColumns}
-        data={memoizedTasks}
+        data={tasks}
         aria-describedby="taskTable" 
       />
 
